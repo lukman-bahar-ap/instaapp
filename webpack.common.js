@@ -35,9 +35,6 @@ module.exports = {
         use: [
           devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
           {
-            loader: 'style-loader',
-          },
-          {
             loader: 'css-loader',
           },
           {
@@ -54,8 +51,8 @@ module.exports = {
     splitChunks: {
       chunks: 'all',
       minSize: 20000,
-      maxSize: 70000,
-      minChunks: 1,
+      maxSize: 60000,
+      minChunks: 6,
       maxAsyncRequests: 30,
       maxInitialRequests: 30,
       automaticNameDelimiter: '~',

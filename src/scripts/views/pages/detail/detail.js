@@ -3,7 +3,6 @@ import './component/review-form';
 import './component/review-list';
 import UrlParser from '../../../routes/url-parser';
 import LikeButtonPresenter from './utility/like-button-presenter';
-import ReviewButtonPresenter from './utility/review-button-presenter';
 import FavoriteRestoIdb from '../../../data/favorite-resto-idb';
 import RestoSource from '../../../data/resto-source';
 import launchToast from '../../../utils/toast';
@@ -54,9 +53,9 @@ const Detail = {
       notification: launchToast,
     });
 
-    this.btnSubmit.addEventListener('click', (e) => {
+    this.btnSubmit.addEventListener('click', async (e) => {
       e.preventDefault();
-      return this.submitReview();
+      await this.submitReview();
     });
 
     this.btnClose.addEventListener('click', () => {
@@ -64,9 +63,14 @@ const Detail = {
     });
   },
 
-  submitReview() {
+  async submitReview() {
     if (this.isRequiered()) {
-      ReviewButtonPresenter.init({
+      const reviewButtonPresenter = await import('./utility/review-button-presenter')
+        .then((module) => module.default)
+        .then((ReviewButtonPresenter) => ReviewButtonPresenter)
+        .catch((error) => new Error(error));
+
+      await reviewButtonPresenter.init({
         id: this.id,
         name: this.inputName.value,
         review: this.inputReview.value,
@@ -111,7 +115,7 @@ const Detail = {
   async getDetailResto(id) {
     const resto = await this.getFromFavorite(id);
     if (resto) {
-      return this.getFromFavorite(id);
+      return resto;
     }
     return this.getFromSource(id);
   },

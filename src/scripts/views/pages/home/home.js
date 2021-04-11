@@ -5,7 +5,7 @@ import '../../components/resto-list';
 import RestoSource from '../../../data/resto-source';
 import Dashboard from './utility/dashboard';
 import FavoriteRestoIdb from '../../../data/favorite-resto-idb';
-import ViralSource from '../../../data/viral-source';
+// import ViralSource from '../../../data/viral-source';
 
 const Home = {
   async init() {
@@ -44,25 +44,25 @@ const Home = {
     await this.init();
     await this.isLoaded();
 
-    const searchResto = () => this.discoverSearch(
+    const searchResto = await this.discoverSearch(
       this.restoListElement,
       this.searchElement.value,
     );
     this.searchElement.clickEvent = searchResto;
 
-    const dataViral = await ViralSource.list();
-    this.viralListElement.virals = dataViral;
+    // const dataViral = await ViralSource.list();
+    // this.viralListElement.virals = dataViral;
   },
 
   async loadDataResto(data) {
     const dashboardData = await this.dashboardCalculate(data);
 
-    const getListAllResto = () => this.showRestoToList(data, 'Problem loaded data, try again later');
+    const getListAllResto = await this.showRestoToList(data, 'Problem loaded data, try again later');
 
     this.dashboardElement.setDataDashboard = dashboardData;
     this.dasboardButton({ dashboardData, data, getListAllResto });
 
-    getListAllResto();
+    return getListAllResto;
   },
 
   async dasboardButton({ dashboardData, data, getListAllResto }) {
